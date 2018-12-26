@@ -1,0 +1,59 @@
+{
+    "name": "shapecode/iconify",
+    "description": "Functions for Iconify JSON SVG's.",
+    "keywords": [
+        "iconify",
+        "fontawesome",
+        "material-design",
+        "material",
+        "design",
+        "emoji",
+        "smarticons",
+        "ant",
+        "entypo",
+        "dashicons",
+        "web-hosting-hub",
+        "icomoon",
+        "jam",
+        "prestashop",
+        "vaadin",
+        "ionicons",
+        "icons",
+        "icon",
+        "shapecode"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/shapecode/iconify",
+    "support": {
+        "email": "git@shapecode.de",
+        "issues": "https://github.com/shapecode/iconify/issues",
+        "source": "https://github.com/shapecode/iconify/releases",
+        "wiki": "https://github.com/shapecode/iconify/wiki"
+    },
+    "authors": [
+        {
+            "name": "Shapecode",
+            "homepage": "https://shapecode.de",
+            "email": "git@shapecode.de"
+        }
+    ],
+    "require": {
+        "php": "~7.1",
+        "ext-json": "*",
+
+        "iconify/json": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shapecode\\Iconify\\": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
