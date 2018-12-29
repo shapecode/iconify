@@ -125,7 +125,7 @@ class IconSet implements IconSetInterface
         // Alias
         if (!isset($this->data['aliases'][$name])) {
 
-            return null;
+            return [];
         }
 
         $result = $this->data['aliases'][$name];
@@ -143,14 +143,14 @@ class IconSet implements IconSetInterface
             }
 
             if (!isset($this->data['aliases'][$parent])) {
-                return null;
+                return [];
             }
             $result = $this->mergeIcon($result, $this->data['aliases'][$parent]);
             $parent = $this->data['aliases'][$parent]['parent'];
             $iteration++;
         }
 
-        return null;
+        return [];
     }
 
     /**
