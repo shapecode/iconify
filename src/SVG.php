@@ -47,7 +47,7 @@ class SVG implements SVGInterface
         $attributes = [];
 
         // Get width/height
-        $inline = isset($props['inline']) ? ($props['inline'] === true || $props['inline'] === 'true' || $props['inline'] === '1') : false;
+        $inline = (bool)($props['inline'] ?? true);
         $box = [
             'left'   => $item['left'],
             'top'    => $inline ? $item['inlineTop'] : $item['top'],
