@@ -13,11 +13,10 @@ interface IconifyInterface
 
     /**
      * @param      $lib
-     * @param null $dir
      *
      * @return IconSet
      */
-    public function getSet(string $lib, ?string $dir = null): IconSetInterface;
+    public function getSet(string $lib): IconSetInterface;
 
     /**
      * @param string $lib
@@ -35,16 +34,21 @@ interface IconifyInterface
     /**
      * @param string      $lib
      * @param string|null $dir
-     *
-     * @return IconSetInterface
      */
-    public function loadSet(string $lib, ?string $dir = null): IconSetInterface;
+    public function loadSet(string $lib, ?string $dir = null): void;
 
     /**
-     * @param string      $icon
-     * @param string|null $dir
+     * @param string $icon
      *
      * @return SVGInterface
      */
-    public function getSVG(string $icon, ?string $dir = null): SVGInterface;
+    public function getSVG(string $icon): SVGInterface;
+
+    /**
+     * @param string $icon
+     * @param array  $options
+     *
+     * @return string
+     */
+    public function getBody(string $icon, array $options = []): string;
 }

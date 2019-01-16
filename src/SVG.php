@@ -38,9 +38,9 @@ class SVG implements SVGInterface
             'slice'      => false,
         ];
         $transform = [
-            'rotate' => $item['rotate'],
-            'hFlip'  => $item['hFlip'],
-            'vFlip'  => $item['vFlip']
+            'rotate' => $item['rotate'] ?? 0,
+            'hFlip'  => $item['hFlip'] ?? false,
+            'vFlip'  => $item['vFlip'] ?? false
         ];
         $style = '';
 
@@ -81,7 +81,7 @@ class SVG implements SVGInterface
             } elseif (is_string($value)) {
                 $units = preg_replace('/^-?[0-9.]*/', '', $value);
                 if ($units === '') {
-                    $transform['rotate'] += intval($value);
+                    $transform['rotate'] += (int)$value;
                 } elseif ($units !== $value) {
                     $split = false;
                     switch ($units) {
@@ -95,7 +95,10 @@ class SVG implements SVGInterface
                             $split = 90;
                     }
                     if ($split) {
-                        $transform['rotate'] += round(intval(substr($value, 0, strlen($value) - strlen($units))) / $split);
+                        $value = (int)$value;
+                        $units = (int)$units;
+
+                        $transform['rotate'] += round(substr($value, 0, strlen($value) - strlen($units)) / $split);
                     }
                 }
             }
@@ -162,8 +165,8 @@ class SVG implements SVGInterface
         // Calculate dimensions
         // Values for width/height: null = default, 'auto' = from svg, false = do not set
         // Default: if both values aren't set, height defaults to '1em', width is calculated from height
-        $customWidth = isset($props['width']) ? $props['width'] : null;
-        $customHeight = isset($props['height']) ? $props['height'] : null;
+        $customWidth = $props['width'] ?? null;
+        $customHeight = $props['height'] ?? null;
 
         if ($customWidth === null && $customHeight === null) {
             $customHeight = '1em';
@@ -300,7 +303,7 @@ class SVG implements SVGInterface
      */
     public static function calculateDimension($size, $ratio, $precision = 100)
     {
-        if ($ratio == 1) {
+        if ($ratio === 1) {
             return $size;
         }
 
@@ -322,11 +325,11 @@ class SVG implements SVGInterface
 
         foreach ($matches[0] as $match) {
             $offset = $match[1];
-            $number = floatval($match[0]);
+            $number = (float)$match[0];
             if ($offset > $start) {
                 $result .= substr($size, $start, $offset - $start);
             }
-            $result .= strval(ceil($number * $ratio * $precision) / $precision);
+            $result .= ceil($number * $ratio * $precision) / $precision;
             $start = $offset + strlen($match[0]);
         }
         $result .= substr($size, $start);
@@ -355,12 +358,12 @@ class SVG implements SVGInterface
             try {
                 $random = bin2hex(random_bytes(3));
             } catch (\Exception $e) {
-                $random = dechex(mt_rand(0, 0x1000000));
+                $random = dechex(random_int(0, 0x1000000));
             }
         } elseif (function_exists('openssl_random_pseudo_bytes')) {
             $random = bin2hex(openssl_random_pseudo_bytes(3));
         } else {
-            $random = dechex(mt_rand(0, 0x1000000));
+            $random = dechex(random_int(0, 0x1000000));
         }
 
         $counter = 0;

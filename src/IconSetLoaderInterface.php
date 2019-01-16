@@ -15,7 +15,7 @@ interface IconSetLoaderInterface
      * @param      $name
      * @param null $dir
      *
-     * @return IconSet
+     * @return IconSet|null
      */
-    public function loadSet(string $name, ?string $dir = null): IconSet;
+    public function loadSet(string $name, ?string $dir = null): ?IconSetInterface;
 }

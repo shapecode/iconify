@@ -124,7 +124,6 @@ class IconSet implements IconSetInterface
 
         // Alias
         if (!isset($this->data['aliases'][$name])) {
-
             return [];
         }
 
@@ -183,6 +182,10 @@ class IconSet implements IconSetInterface
     public function getSVG($name): SVGInterface
     {
         $iconData = $this->getIconData($name);
+
+        if (empty($iconData)) {
+            throw new \RuntimeException('icon ' . $name . ' not found');
+        }
 
         return new SVG($iconData);
     }

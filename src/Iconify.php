@@ -28,12 +28,14 @@ class Iconify implements IconifyInterface
     /**
      * @inheritdoc
      */
-    public function getSet(string $lib, ?string $dir = null): IconSetInterface
+    public function getSet(string $lib): IconSetInterface
     {
         if (!$this->hasSet($lib)) {
-            $set = $this->loadSet($lib, $dir);
+            $this->loadSet($lib);
+        }
 
-            $this->addSet($lib, $set);
+        if (!$this->hasSet($lib)) {
+            throw new \RuntimeException('set ' . $lib . ' not found');
         }
 
         return $this->sets[$lib];
@@ -60,20 +62,38 @@ class Iconify implements IconifyInterface
     /**
      * @inheritdoc
      */
-    public function loadSet(string $lib, ?string $dir = null): IconSetInterface
+    public function loadSet(string $lib, ?string $dir = null): void
     {
-        return $this->loader->loadSet($lib, $dir);
+        $set = $this->loader->loadSet($lib, $dir);
+
+        if ($set !== null) {
+            $this->addSet($lib, $set);
+        }
     }
 
     /**
      * @inheritdoc
      */
-    public function getSVG(string $icon, ?string $dir = null): SVGInterface
+    public function getSVG(string $icon): SVGInterface
     {
-        list($lib, $name) = explode(':', $icon);
+        [$lib, $name] = explode(':', $icon);
 
-        $set = $this->getSet($lib, $dir);
+        try {
+            $set = $this->getSet($lib);
 
-        return $set->getSVG($name);
+            return $set->getSVG($name);
+        } catch (\Exception $e) {
+            $set = $this->getSet('fa-solid');
+
+            return $set->getSVG('question-circle');
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBody(string $icon, array $options = []): string
+    {
+        return $this->getSVG($icon)->getSVG($options);
     }
 }

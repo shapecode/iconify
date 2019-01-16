@@ -28,7 +28,7 @@ class IconSetLoader implements IconSetLoaderInterface
     /**
      * @inheritdoc
      */
-    public function loadSet(string $name, ?string $dir = null): IconSet
+    public function loadSet(string $name, ?string $dir = null): ?IconSetInterface
     {
         $key = $this->getCacheKey($name);
         $timeKey = $key . '-mtime';
@@ -37,6 +37,11 @@ class IconSetLoader implements IconSetLoaderInterface
         $cacheTime = $this->cache->getItem($timeKey);
 
         $filename = $this->findSet($name, $dir);
+
+        if (!file_exists($filename)) {
+            return null;
+        }
+
         $mtime = filemtime($filename);
 
         if ($cacheItem->isHit() && $cacheTime->isHit() && $cacheTime->get() === $mtime) {
